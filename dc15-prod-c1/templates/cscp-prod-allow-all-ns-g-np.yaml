@@ -1,0 +1,21 @@
+apiVersion: projectcalico.org/v3
+kind: GlobalNetworkPolicy
+metadata:
+  name: cscp-prod-allow-all-ns-g-np
+  labels:
+    {{- include "dc15-prod-c1.labels" . | nindent 4}}
+  {{- with .Values.cscp.labels}}
+  {{- toYaml . | nindent 4}}
+  {{- end}}
+  {{- with .Values.cscp.labels}}
+  {{- toYaml . | nindent 4}}
+  {{- end}}
+spec:
+  namespaceSelector: has(field.cattle.io/projectId) && field.cattle.io/projectId in { "{{.Values.cscp.prod.rancherProjectID}}" }
+  types:
+    - Ingress
+  ingress:
+    - action: Allow
+      protocol: TCP
+      source:
+        namespaceSelector: has(field.cattle.io/projectId) && field.cattle.io/projectId in {"{{.Values.cscp.prod.rancherProjectID}}"}

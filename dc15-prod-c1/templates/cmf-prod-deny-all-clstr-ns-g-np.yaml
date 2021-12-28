@@ -1,0 +1,26 @@
+apiVersion: projectcalico.org/v3
+kind: GlobalNetworkPolicy
+metadata:
+  name: cmf-deny-all-clstr-ns-g-np
+  labels:
+    {{- include "dc15-prod-c1.labels" . | nindent 4}}
+spec:
+  namespaceSelector: has(projectcalico.org/namespace) && projectcalico.org/namespace not in {"kube-system",  "cattle-system", "prometheus", "default", "falco", "gatekeeper-system"}
+  types:
+    - Ingress
+    - Egress
+  egress:
+    # allow all namespaces to communicate to DNS pods
+    - action: Allow
+      protocol: UDP
+      destination:
+        selector: 'k8s-app == "kube-dns"'
+        ports:
+          - 53
+    - action: Allow
+      protocol: TCP
+      destination:
+        selector: 'k8s-app == "kube-dns"'
+        ports:
+          - 53
+          - 9153

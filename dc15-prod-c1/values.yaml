@@ -1,0 +1,43 @@
+# Default values for dc15-prod-c1.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+rsfs:
+  prod:
+    rancherProjectID: "p-q4npk"
+    labels:
+      env: "Prod"
+  shared:
+    rancherProjectID: "p-rp2wx"
+    labels:
+      env: "shared"   
+  labels:
+    line-of-business: "Risk-Solutions"
+    product-line: "Fraud-Solutions"
+    application-code: "rsfs"
+
+cscp:
+  prod:
+    rancherProjectID: "p-cxk6j"
+    labels:
+      env: "Prod"
+  shared:
+     rancherProjectID: "p-rp2wx"
+    labels:
+      env: "shared"   
+  labels:
+    line-of-business: "Communication-Solutions"
+    product-line: "Carrier-Provisioning"
+    application-code: "cscp"
+  
+ciope:
+  prod:
+    rancherProjectID: "p-k8hl2"
+    labels:
+      env: "prod"
+  labels:
+    line-of-business: "platform-Engineering"

@@ -1,0 +1,21 @@
+apiVersion: projectcalico.org/v3
+kind: GlobalNetworkPolicy
+metadata:
+  name: rsfs-prod-allow-all-ns-g-np
+  labels:
+    {{- include "dc15-prod-c1.labels" . | nindent 4}}
+  {{- with .Values.rsfs.labels}}
+  {{- toYaml . | nindent 4}}
+  {{- end}}
+  {{- with .Values.rsfs.prod.labels}}
+  {{- toYaml . | nindent 4}}
+  {{- end}}
+spec:
+  namespaceSelector: has(field.cattle.io/projectId) && field.cattle.io/projectId in { "{{.Values.rsfs.prod.rancherProjectID}}" }
+  types:
+    - Ingress
+  ingress:
+    - action: Allow
+      protocol: TCP
+      source:
+        namespaceSelector: has(field.cattle.io/projectId) && field.cattle.io/projectId in {"{{.Values.rsfs.prod.rancherProjectID}}"}
